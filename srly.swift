@@ -31,14 +31,14 @@ public class SRL {
     }
     
     private func loadItems(plist: NSDictionary) -> NSMutableArray {
-        var children = plist.mutableArrayValueForKey("Children")
-        var srl = children.objectAtIndex(indexOfReadingList(children)) as! NSMutableDictionary
-        var items = srl.mutableArrayValueForKey("Children")
+        let children = plist.mutableArrayValueForKey("Children")
+        let srl = children.objectAtIndex(indexOfReadingList(children)) as! NSMutableDictionary
+        let items = srl.mutableArrayValueForKey("Children")
         return items
     }
     
     private func indexOfReadingList(array: NSArray) -> Int {
-        for (index, item) in enumerate(array) {
+        for (index, item) in array.enumerate() {
             if let item = item as? Dictionary<String, AnyObject>,
                 title = item["Title"] as? String
                 where title == SafariReadingListId {
@@ -84,10 +84,10 @@ let srl = SRL()
 
 var laters = srl.items
 
-println("Number of READ IT LATER items: \(laters.count)")
+print("Number of READ IT LATER items: \(laters.count)")
 
-for (index, item) in enumerate(Array(laters)) {
-    println()
+for (index, item) in Array(laters).enumerate() {
+    print("")
     let task = NSTask()
     task.launchPath = ydlPath
     // Don't try to be smart. youtube-dl can handle a lot of URLs.
@@ -95,7 +95,7 @@ for (index, item) in enumerate(Array(laters)) {
     task.arguments = [SRL.url(item), "--no-playlist"]
     task.launch()
     task.waitUntilExit()
-    println()
+    print("")
 
     if task.terminationStatus == 0 {
         laters.removeObjectAtIndex(index)
